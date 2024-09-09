@@ -50,6 +50,11 @@ def load_tokenizer_and_model_for_train(config, device):
     print('-'*10, 'Load tokenizer & model complete', '-'*10,)
     return generate_model , tokenizer
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 54570e73c6867250070e456a3d275d63930bc1ff
 def load_trainer_for_train(config,generate_model,tokenizer,train_inputs_dataset,val_inputs_dataset):
     print('-'*10, 'Make training arguments', '-'*10,)
     # set training args
