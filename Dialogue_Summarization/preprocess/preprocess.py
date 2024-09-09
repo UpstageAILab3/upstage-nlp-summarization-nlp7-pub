@@ -3,15 +3,23 @@ import re
 import os
 from dataset.dataset import  DatasetForTrain
 from dataset.dataset import  DatasetForVal
+<<<<<<< HEAD
 import random
 
 class Preprocess:
     # 마스크 토큰 사용시 __init__에 mask_token: str 추가
+=======
+
+class Preprocess:
+>>>>>>> 54570e73c6867250070e456a3d275d63930bc1ff
     def __init__(self, bos_token: str, eos_token: str, sep_token: str) -> None:
         self.bos_token = bos_token
         self.eos_token = eos_token
         self.sep_token = sep_token
+<<<<<<< HEAD
         # self.mask_token = mask_token
+=======
+>>>>>>> 54570e73c6867250070e456a3d275d63930bc1ff
 
     @staticmethod
     def make_set_as_df(file_path, is_train=True):
@@ -22,6 +30,7 @@ class Preprocess:
             return df[['fname', 'dialogue']]
 
     def add_sep_tokens(self, dialogue_with_sep):
+<<<<<<< HEAD
         """
         sep토큰 줄 바뀔 때마다 추가
         
@@ -109,6 +118,14 @@ class Preprocess:
         dataset['dialogue'] = dataset['dialogue'].apply(self.add_sep_tokens)
         # dataset['dialogue'] = dataset['dialogue'].apply(self.preprocess_sentence)
         # dataset['dialogue'] = dataset['dialogue'].apply(lambda x: self.apply_permute_or_infill(x, self.mask_token))
+=======
+        if isinstance(dialogue_with_sep, str):
+            return re.sub(r'(\r\n|\n)', f'{self.sep_token}', dialogue_with_sep)
+        return ''
+
+    def make_input(self, dataset, is_test=False):
+        dataset['dialogue'] = dataset['dialogue'].apply(self.add_sep_tokens)
+>>>>>>> 54570e73c6867250070e456a3d275d63930bc1ff
 
         if is_test:
             encoder_input = dataset['dialogue']
@@ -118,6 +135,7 @@ class Preprocess:
             encoder_input = dataset['dialogue']
             decoder_input = dataset['summary'].apply(lambda x: self.bos_token + str(x))
             decoder_output = dataset['summary'].apply(lambda x: str(x) + self.eos_token)
+<<<<<<< HEAD
 
             # processed_encoder_input = dataset['dialogue']
             # processed_decoder_input = dataset['summary'].apply(lambda x: self.bos_token + str(x))
@@ -127,10 +145,13 @@ class Preprocess:
             # encoder_input = original_encoder_input.tolist() + processed_encoder_input.tolist()
             # decoder_input = original_decoder_input.tolist() + processed_decoder_input.tolist()
             # decoder_output = original_decoder_output.tolist() + processed_decoder_output.tolist()
+=======
+>>>>>>> 54570e73c6867250070e456a3d275d63930bc1ff
             return encoder_input.tolist(), decoder_input.tolist(), decoder_output.tolist()
 
 # tokenization 과정까지 진행된 최종적으로 모델에 입력될 데이터를 출력합니다.
 def prepare_train_dataset(config, preprocessor, data_path, tokenizer):
+<<<<<<< HEAD
     train_file_path = os.path.join(data_path,'total_train.csv')
     # train_file_path = os.path.join('/root/dialogue/data/total_train.csv')
     
@@ -142,6 +163,28 @@ def prepare_train_dataset(config, preprocessor, data_path, tokenizer):
     train_data = preprocessor.make_set_as_df(train_file_path)
     val_data = preprocessor.make_set_as_df(val_file_path)
 
+=======
+    # train_file_path = os.path.join(data_path,'total_train.csv')
+    train_file_path = os.path.join('/root/dialogue/data/total_train.csv')
+    
+    # val_file_path = os.path.join(data_path,'dev.csv')
+    val_file_path = os.path.join('/root/dialogue/data/dev.csv')
+    
+
+    # train, validation에 대해 각각 데이터프레임을 구축합니다.
+    
+    train_data = preprocessor.make_set_as_df(train_file_path)
+    val_data = preprocessor.make_set_as_df(val_file_path)
+
+    # print('-'*150)
+    # print(f'train_data:\n {train_data["translated_dialogue"][0]}')
+    # print(f'train_label:\n {train_data["translated_summary"][0]}')
+
+    # print('-'*150)
+    # print(f'val_data:\n {val_data["translated_dialogue"][0]}')
+    # print(f'val_label:\n {val_data["translated_summary"][0]}')
+
+>>>>>>> 54570e73c6867250070e456a3d275d63930bc1ff
     encoder_input_train , decoder_input_train, decoder_output_train = preprocessor.make_input(train_data)
     encoder_input_val , decoder_input_val, decoder_output_val = preprocessor.make_input(val_data)
     print('-'*10, 'Load data complete', '-'*10,)
