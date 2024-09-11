@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 ### Dataset overview
 
-![img](./doc_imgs/0001.png)
+![img](./minjun/doc_imgs/0001.png)
 
 - train, dev(valid), test 세 가지 csv 파일이 주어집니다.
 - train, dev set에서는 위 이미지에 나와있듯 fname, dialogue, summary, topic 4가지 컬럼으로 구성되며 test는 fname, dialogue로만 구성됩니다.
@@ -47,17 +47,17 @@ pip install -r requirements.txt
 
 #### 1.Dialogue, Summary 길이 파악
 
-![img](./doc_imgs/0002.png)
+![img](./minjun/doc_imgs/0002.png)
 
 요약 모델을 학습하기 전에 대화문과 요약문의 길이에 대해 파악합니다. 이는 모델 학습시 학습에 반영될 문장의 최대 길이, 생성할 문장의 최대 길이를 결정하는데 중요한 역할을 합니다.
 
-![img](./doc_imgs/0003.png)
+![img](./minjun/doc_imgs/0003.png)
 
 또한, 대화문과 요약문 길이간 적절한 비율을 파악하기 위해 선형회귀를 수행했을 때 기울기(slope)가 약 0.14임을 알 수 있습니다. 이를 근거로 dialogue 길이의 0.14 정도로 generate max length를 설정할 수도 있을 것 같습니다.
 
 #### 2.Topic
 
-![img](./doc_imgs/0004.png)
+![img](./minjun/doc_imgs/0004.png)
 
 그래프를 그렸을 때 너무 지저분해져 따로 첨부하지는 않았으나, train과 dev를 취합했을 때 topic은 6337개입니다.
 
@@ -72,23 +72,23 @@ pip install -r requirements.txt
 
 dialogue에 등장하는 #문자열# 형태의 특수토큰은 다음과 같습니다.
 
-![img](./doc_imgs/0005.png)
+![img](./minjun/doc_imgs/0005.png)
 
 처음엔 이러한 토큰이 필요하지 않은듯 했으나, 데이터 분석 과정에서 summary에 특수토큰이 등장하는 것을 확인하고 요약문 생성시 주어, 목적어로 활용된다는 점을 감안해 제거하지 않았습니다.
 
 #### 2.반복되는 글자 제거
 
-![img](./doc_imgs/0006.png)
+![img](./minjun/doc_imgs/0006.png)
 
 구어체임에도 불구하고 dialogue 컬럼에는 "ㅋㅋ"와 같은 값들이 존재합니다. 극소량만 존재하지만 이왕 발견한거 제거해줬습니다.
 
-![img](./doc_imgs/0007.png)
+![img](./minjun/doc_imgs/0007.png)
 
 또한 위와 같이 동일한 글자가 연속적으로 등장하는 경우에도 문자열의 길이만 증가시킬 뿐 특별한 의미를 갖지 않는다고 판단하여 최초 한글자만 남겨두고 뒷부분은 제거하는 방식으로 처리했습니다.
 
 #### 3.한글 이외의 글자
 
-![img](./doc_imgs/0008.png)
+![img](./minjun/doc_imgs/0008.png)
 
 한글이 아닌 값이 어떤 것들이 있는지 파악해봤습니다. 
 
@@ -111,7 +111,7 @@ pretrained weight를 온전히 활용할 수 있어야 하기 때문에 전반�
 
 #### 1.R3F
 
-![img](./doc_imgs/0009.png)
+![img](./minjun/doc_imgs/0009.png)
 
 - 입력에 일부러 random noise를 더해서 추론시키고 평범하게 추론했을 때와의 KL Divergence를 loss로 함께 사용합니다. 
 - cross entropy가 문맥을 반영하지 않고 단어를 중점으로 보기 때문에 꽤나 효과적일 것이라 적용했었는데 아쉽게도 성능은 baseline보다 감소되었습니다.
@@ -157,7 +157,7 @@ BART, T5 모델들은 성능 향상이 이루어지지 않아서 LLM 모델을 �
 
 ### Leader Board
 
-![img](./doc_imgs/0010.png)
+![img](./minjun/doc_imgs/0010.png)
 
 
 ### Presentation
